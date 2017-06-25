@@ -1,11 +1,12 @@
 import DataLoader from 'dataloader'
 import R from 'ramda'
 import {characterLoader} from './character'
+import {creatorLoader} from './creator'
 import {extractIdFromURI} from '../../helpers/extract-id-from-uri'
 import {comicLoader} from './comic'
 import {RedisDataLoaderConstructor} from '../../redisDataLoader'
 
-const getCharacterId = R.compose(
+const getId = R.compose(
   extractIdFromURI,
   R.prop('resourceURI')
 )
@@ -15,7 +16,8 @@ const comicDetailDataLoader = new DataLoader((ids) => {
     try {
       const comic = await comicLoader.load(id)
 
-      comic.characters = await characterLoader.loadMany(R.map(getCharacterId, comic.characters))
+      comic.characters = await characterLoader.loadMany(R.map(getId, comic.characters))
+      comic.creators = await creatorLoader.loadMany(R.map(getId, comic.creators))
 
       return comic
     } catch (error) {

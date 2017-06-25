@@ -1,0 +1,15 @@
+@import '../../../styles/variables.pcss';
+
+.characters {
+  width: 100%;
+  lost-flex-container: row;
+  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 100vh;
+  padding-bottom: calc(var(--toolbar-height-device) + 10px);
+}
+
+@media (--desktop) {
+  padding-bottom: calc(var(--toolbar-height-large) + 10px);
+}

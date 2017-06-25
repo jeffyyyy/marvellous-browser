@@ -8,7 +8,9 @@ import { store } from './store'
 import { progress } from './progress'
 import Comics from './components/comics/components/Comics'
 import Comic from './components/comics/components/comic/Comic'
+import Characters from './components/characters/components/Characters'
 import Character from './components/characters/components/character/Character'
+import Creators from './components/creators/components/Creators'
 import { client } from './client'
 import useScroll from 'react-router-scroll/lib/useScroll'
 import { logPageView } from './analytics'
@@ -31,8 +33,11 @@ export const bootstrap = () => {
             <Route path="/comics/:id"
                    component={(props) => <Comic id={props.params.id}/>}/>
           </Route>
-          <Route path="/characters/:id"
+          <Route path="/creators" component={Creators}/>
+          <Route path="/characters" component={Characters}>
+            <Route path="/characters/:id"
                  component={(props) => <Character id={props.params.id}/>}/>
+            </Route>
         </Route>
       </Router>
     </ApolloProvider>,

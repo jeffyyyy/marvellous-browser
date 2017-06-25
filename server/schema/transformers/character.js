@@ -4,6 +4,7 @@ import {cleanString} from '../../helpers/clean-string'
 
 export const transformCharacter = (rawCharacter) => {
   return R.compose(
+    R.assoc('hasImages', !R.contains('image_not_available', R.pathOr('', ['thumbnail', 'path'], rawCharacter))),
     R.evolve({
       thumbnail: transformImage,
       comics: R.prop('items'),

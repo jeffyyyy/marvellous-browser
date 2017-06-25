@@ -9,6 +9,7 @@ export const transformComic = (rawComic) => {
       thumbnail: transformImage,
       images: R.map(transformImage),
       characters: R.prop('items'),
+      creators: R.prop('items'),
       description: cleanString
     }),
     R.pick([
@@ -18,7 +19,8 @@ export const transformComic = (rawComic) => {
       'images',
       'description',
       'variantDescription',
-      'characters'
+      'characters',
+      'creators'
     ])
   )(rawComic)
 }

@@ -17,31 +17,12 @@ import {gql} from 'react-apollo'
 import merge from 'ramda/src/merge'
 import remove from 'ramda/src/remove'
 import append from 'ramda/src/append'
-import reduce from 'ramda/src/reduce'
 import clone from 'ramda/src/clone'
 import map from 'ramda/src/map'
-import head from 'ramda/src/head'
-import toPairs from 'ramda/src/toPairs'
 import compose from 'ramda/src/compose'
-import last from 'ramda/src/last'
-import isNil from 'ramda/src/isNil'
 import evolve from 'ramda/src/evolve'
 import {browserHistory} from 'react-router'
-
-const objectToQueryParams = compose(reduce((
-  params,
-  pair
-) => {
-  if (isNil(last(pair))) {
-    return params
-  }
-
-  const paramsPair = `${head(pair)}=${encodeURIComponent(last(pair))}`
-  if (!params) {
-    return paramsPair
-  }
-  return `${params}&${paramsPair}`
-}, ''), toPairs)
+import {objectToQueryParams} from '../../helpers/objectToQueryParams'
 
 const cleanComicsVariables = evolve({
   characterIds: map((characterId) => characterId.id)
@@ -55,7 +36,7 @@ const mergeQueryVariables = compose(cleanComicsVariables, merge({
   orderBy: COMICS_ORDER_ISSUE_NUMBER_DESC
 }), clone)
 
-const COMICS_QUERY = gql`query (
+export const COMICS_QUERY = gql`query (
     $start: Int,
     $limit: Int,
     $orderBy: String,

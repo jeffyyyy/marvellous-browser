@@ -7,8 +7,12 @@ import any from 'ramda/src/any'
 import {toggleToolbar} from '../actions'
 import classNames from 'classnames'
 import {ComicControls} from './ComicControls'
-import {DetailBack} from './DetailBack'
 import {ComicSearch} from './ComicSearch'
+import {CreatorControls} from './CreatorSearch/CreatorControls'
+import {CreatorSearch} from './CreatorSearch/CreatorSearch'
+import {CharacterControls} from './CharactersSearch/CharacterControls'
+import {CharacterSearch} from './CharactersSearch/CharacterSearch'
+import {DetailBack} from './DetailBack'
 
 const getPathname = pathOr('', ['routing', 'locationBeforeTransitions', 'pathname'])
 const isOnDetailsPage = () => {
@@ -21,6 +25,8 @@ function Toolbar(props) {
   const {
     dispatch,
     comics,
+    creators,
+    characters,
     toolbar: {
       show,
       showSearch
@@ -31,11 +37,12 @@ function Toolbar(props) {
 
   // Show Comics load more / other controls iff on the /comics page
   const showComicControls = '/comics' === pathname
-
+  const showCreatorControls = '/creators' === pathname
+  const showCharacterControls = '/characters' === pathname
   const toolbarClass = classNames({
     toolbar: true,
     'toolbar--active': show,
-    'toolbar--active-search': show && showSearch && showComicControls
+    'toolbar--active-search': show && showSearch && (showComicControls || showCreatorControls || showCharacterControls)
   })
 
   const toolbarToggleClass = classNames({
@@ -45,7 +52,7 @@ function Toolbar(props) {
 
   const toolbarBottomClass = classNames({
     'toolbar__bottom': true,
-    'toolbar__bottom--is-active': show && showSearch && showComicControls
+    'toolbar__bottom--is-active': show && showSearch && (showComicControls || showCreatorControls || showCharacterControls)
   })
 
   // Show the back button iff on a detail page
@@ -73,12 +80,10 @@ function Toolbar(props) {
             Comics
           </Link>
           <Link to="/creators"
-                className="toolbar__top__links__disabled"
                 activeClassName="toolbar__top__links--active">
             Creators
           </Link>
           <Link to="/characters"
-                className="toolbar__top__links__disabled"
                 activeClassName="toolbar__top__links--active">
             Characters
           </Link>
@@ -86,12 +91,25 @@ function Toolbar(props) {
 
         {showComicControls && <ComicControls comics={comics}
                                              dispatch={dispatch}/>}
+        {showCreatorControls && <CreatorControls creators={creators}
+                                             dispatch={dispatch}/>}
+        {showCharacterControls && <CharacterControls characters={characters}
+                                                 dispatch={dispatch}/>}
         {showDetailsBackButton && <DetailBack/>}
       </div>
       <div className={toolbarBottomClass}>
-        <ComicSearch comics={comics}
-                     dispatch={dispatch}
-                     showSearch={showSearch && showComicControls}/>
+        {showComicControls && <ComicSearch comics={comics}
+                                           dispatch={dispatch}
+                                           showSearch={showSearch && showComicControls}/>
+        }
+        {showCreatorControls && <CreatorSearch creators={creators}
+                                               dispatch={dispatch}
+                                               showSearch={showSearch && showCreatorControls}/>
+        }
+        {showCharacterControls && <CharacterSearch characters={characters}
+                                               dispatch={dispatch}
+                                               showSearch={showSearch && showCharacterControls}/>
+        }
       </div>
     </div>
   )
@@ -101,6 +119,8 @@ export default connect((state) => {
   return {
     routing: state.routing,
     comics: state.comics,
+    creators: state.creators,
+    characters: state.characters,
     toolbar: state.toolbar
   }
 })(Toolbar)

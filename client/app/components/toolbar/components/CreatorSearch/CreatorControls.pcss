@@ -1,0 +1,66 @@
+@import '../../../../styles/variables.pcss';
+
+.creator__controls {
+  display: flex;
+  margin-left: auto;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: 10px;
+  position: relative;
+
+  @media (--portrait-tablets) {
+    flex-direction: row;
+    align-items: flex-end;
+    padding-top: 0;
+
+    .creator__controls__sorting {
+      padding-bottom: 10px;
+      padding-left: 15px;
+    }
+
+    .creator__controls__load-more {
+      height: var(--toolbar-height-large);
+    }
+  }
+
+  @media (--landscape-tablets) {
+    .creator__controls__load-more {
+      height: var(--toolbar-height-large);
+    }
+  }
+
+  &__sorting {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    padding-right: 20px;
+    font-size: 16px;
+
+    input {
+      margin-left: 5px;
+    }
+  }
+
+  &__search {
+    background-color: transparent;
+    position: absolute;
+    left: -95px;
+    bottom: 0;
+    width: 95px;
+
+    i {
+      height: 100%;
+      display: block;
+
+      &::before {
+        line-height: 80px;
+      }
+    }
+  }
+
+  button {
+    height: 90px;
+  }
+}
+

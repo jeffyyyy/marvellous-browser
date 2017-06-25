@@ -11,6 +11,7 @@ import {Link} from 'react-router'
 
 const getComic = pathOr(false, ['data', 'comic'])
 const hasCharacters = compose(length, propOr([], 'characters'))
+const hasCreators = compose(length, propOr([], 'creators'))
 const getComicImage = compose(head, propOr([], 'images'))
 
 function Characters(props) {
@@ -30,6 +31,31 @@ function Characters(props) {
               <img src={character.thumbnail}/>
               <h3>{character.name} {character.role && `(${character.role})`}</h3>
               {character.description && <p>{character.description}</p>}
+            </Link>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function Creators(props) {
+  if (!hasCreators(props)) {
+    return null
+  }
+
+  return (
+    <div className="comic__characters">
+      <h2>Creators</h2>
+      <div className="comic__characters__wrapper">
+        {props.creators.map((creator) => {
+          return (
+            <Link key={creator.id}
+                  to={`/creators/${creator.id}`}
+                  className="comic__characters__wrapper__character"
+                  onClick={e => e.preventDefault()}>
+              <img src={creator.thumbnail}/>
+              <h3>{creator.suffix && `(${creator.suffix})`} {creator.fullName}</h3>
             </Link>
           )
         })}
@@ -73,6 +99,7 @@ function ComicRenderer(props) {
         <p className="comic__description"
            dangerouslySetInnerHTML={{__html: comic.description}}/>
         <Characters characters={comic.characters}/>
+        <Creators creators={comic.creators}/>
       </div>
 
       <div className="comic comic__portrait-tablet">
@@ -87,6 +114,7 @@ function ComicRenderer(props) {
           </div>
         </div>
         <Characters characters={comic.characters}/>
+        <Creators creators={comic.creators}/>
       </div>
     </div>
   )
@@ -103,6 +131,12 @@ const COMIC_QUERY = gql`query ($id: Int!) {
       description
       name
       role
+      thumbnail
+    }
+    creators {
+      id
+      fullName
+      suffix
       thumbnail
     }
   }

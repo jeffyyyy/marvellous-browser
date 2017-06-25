@@ -1,0 +1,56 @@
+@import '../../../../styles/variables.pcss';
+
+:root {
+  --tags-element-height: 68px;
+}
+
+.creator__search {
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+  padding-bottom: 5px;
+  pointer-events: none;
+
+  &--show {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  form {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+
+  &__inputs {
+    width: 80%;
+
+    &__input {
+      height: 25%;
+      display: block;
+      width: 100%;
+      margin: 0 auto;
+      border: none;
+
+      &:last-child {
+        border-top: 1px solid var(--colour-black);
+      }
+
+      @media (--portrait-tablets) {
+        height: 50%;
+      }
+    }
+  }
+
+  &__button {
+    height: 50%;
+    width: 19%;
+    margin-left: auto;
+    display: flex;
+    margin-top: auto;
+
+    @media (--portrait-tablets) {
+      height: 100%;
+    }
+  }
+}
